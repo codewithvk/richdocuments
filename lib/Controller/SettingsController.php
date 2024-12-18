@@ -96,7 +96,7 @@ class SettingsController extends Controller {
 	public function getSettings(): JSONResponse {
 		return new JSONResponse($this->getSettingsData());
 	}
-
+	// TODO : Provide Auth tokens here :)
 	private function getSettingsData(): array {
 		return [
 			'wopi_url' => $this->appConfig->getCollaboraUrlInternal(),
@@ -110,6 +110,7 @@ class SettingsController extends Controller {
 			'product_name' => $this->capabilitiesService->getServerProductName(),
 			'product_version' => $this->capabilitiesService->getProductVersion(),
 			'product_hash' => $this->capabilitiesService->getProductHash(),
+			'userId' => $this->userId
 		];
 	}
 
