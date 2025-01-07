@@ -17,7 +17,8 @@
 			<!-- New Collabora Admin Settings Section -->
 			<div id="admin-cool-frame-section" class="section">
 				<h2>{{ t('richdocuments', 'Collabora Admin Settings') }}</h2>
-				<CoolFrame :endpoint="'/cool/admin-settings'"
+				<CoolFrame v-if="tokenGenerated"
+					:endpoint="'/cool/admin-settings'"
 					:public-wopi-url="settings.public_wopi_url"
 					:access-token="accessToken"
 					:access-token-t-t-l="accessTokenTTL" />
@@ -517,6 +518,7 @@ export default {
 			accessToken: '',
 			accessTokenTTL: '',
 			userId: '',
+			tokenGenerated: false,
 		}
 	},
 	computed: {
@@ -630,6 +632,7 @@ export default {
 			if (data.token) {
 				this.accessToken = data.token
 				this.accessTokenTTL = data.token_ttl
+				this.tokenGenerated = true 
 				console.debug('Admin settings WOPI token generated:', this.accessToken, this.accessTokenTTL)
 			} else if (data.federatedUrl) {
 				console.error('Federated URL returned, not expected for admin settings.')
