@@ -78,6 +78,7 @@ return array(
     'OCA\\Richdocuments\\Service\\FederationService' => $baseDir . '/../lib/Service/FederationService.php',
     'OCA\\Richdocuments\\Service\\FileTargetService' => $baseDir . '/../lib/Service/FileTargetService.php',
     'OCA\\Richdocuments\\Service\\FontService' => $baseDir . '/../lib/Service/FontService.php',
+    'OCA\\Richdocuments\\Service\\SettingsService' => $baseDir . '/../lib/Service/SettingsService.php',
     'OCA\\Richdocuments\\Service\\InitialStateService' => $baseDir . '/../lib/Service/InitialStateService.php',
     'OCA\\Richdocuments\\Service\\PdfService' => $baseDir . '/../lib/Service/PdfService.php',
     'OCA\\Richdocuments\\Service\\RemoteOptionsService' => $baseDir . '/../lib/Service/RemoteOptionsService.php',

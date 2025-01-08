@@ -111,6 +111,7 @@ class ComposerStaticInitRichdocuments
         'OCA\\Richdocuments\\Service\\FederationService' => __DIR__ . '/..' . '/../lib/Service/FederationService.php',
         'OCA\\Richdocuments\\Service\\FileTargetService' => __DIR__ . '/..' . '/../lib/Service/FileTargetService.php',
         'OCA\\Richdocuments\\Service\\FontService' => __DIR__ . '/..' . '/../lib/Service/FontService.php',
+        'OCA\\Richdocuments\\Service\\SettingsService' => __DIR__ . '/..' . '/../lib/Service/SettingsService.php',
         'OCA\\Richdocuments\\Service\\InitialStateService' => __DIR__ . '/..' . '/../lib/Service/InitialStateService.php',
         'OCA\\Richdocuments\\Service\\PdfService' => __DIR__ . '/..' . '/../lib/Service/PdfService.php',
         'OCA\\Richdocuments\\Service\\RemoteOptionsService' => __DIR__ . '/..' . '/../lib/Service/RemoteOptionsService.php',
