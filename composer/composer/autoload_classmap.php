@@ -93,6 +93,7 @@ return array(
     'OCA\\Richdocuments\\TokenManager' => $baseDir . '/../lib/TokenManager.php',
     'OCA\\Richdocuments\\UploadException' => $baseDir . '/../lib/UploadException.php',
     'OCA\\Richdocuments\\WOPI\\Parser' => $baseDir . '/../lib/WOPI/Parser.php',
+    'OCA\\Richdocuments\\WOPI\\SettingsUrl' => $baseDir . '/../lib/WOPI/SettingsUrl.php',
     'mikehaertl\\pdftk\\Command' => $vendorDir . '/mikehaertl/php-pdftk/src/Command.php',
     'mikehaertl\\pdftk\\DataFields' => $vendorDir . '/mikehaertl/php-pdftk/src/DataFields.php',
     'mikehaertl\\pdftk\\FdfFile' => $vendorDir . '/mikehaertl/php-pdftk/src/FdfFile.php',

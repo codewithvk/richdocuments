@@ -126,6 +126,7 @@ class ComposerStaticInitRichdocuments
         'OCA\\Richdocuments\\TokenManager' => __DIR__ . '/..' . '/../lib/TokenManager.php',
         'OCA\\Richdocuments\\UploadException' => __DIR__ . '/..' . '/../lib/UploadException.php',
         'OCA\\Richdocuments\\WOPI\\Parser' => __DIR__ . '/..' . '/../lib/WOPI/Parser.php',
+        'OCA\\Richdocuments\\WOPI\\SettingsUrl' => __DIR__ . '/..' . '/../lib/WOPI/SettingsUrl.php',
         'mikehaertl\\pdftk\\Command' => __DIR__ . '/..' . '/mikehaertl/php-pdftk/src/Command.php',
         'mikehaertl\\pdftk\\DataFields' => __DIR__ . '/..' . '/mikehaertl/php-pdftk/src/DataFields.php',
         'mikehaertl\\pdftk\\FdfFile' => __DIR__ . '/..' . '/mikehaertl/php-pdftk/src/FdfFile.php',
