@@ -103,9 +103,11 @@ class WopiController extends Controller {
 
 			// TODO: condition for $wopi not found?
 
+			$userSettingsUri = $this->generateUserSettingsUri($wopi);
+
 			if ($fileId == "-1" && $wopi->getTokenType() == WOPI::TOKEN_TYPE_SETTING_AUTH) {
 				$response = [
-					"usersettings" => 'DONE',
+					"UserSettingsUri" => $userSettingsUri,
 				];
 
 				return new JSONResponse($response);
@@ -171,6 +173,7 @@ class WopiController extends Controller {
 			'IsUserLocked' => $this->permissionManager->userIsFeatureLocked($wopi->getEditorUid()),
 			'EnableRemoteLinkPicker' => (bool)$wopi->getCanwrite() && !$isPublic && !$wopi->getDirect(),
 			'HasContentRange' => true,
+			"UserSettingsUri" => $userSettingsUri,
 		];
 
 		$enableZotero = $this->config->getAppValue(Application::APPNAME, 'zoteroEnabled', 'yes') === 'yes';
@@ -369,8 +372,45 @@ class WopiController extends Controller {
 	#[NoAdminRequired]
 	#[NoCSRFRequired]
 	#[PublicPage]
+	#[FrontpageRoute(verb: 'GET', url: 'wopi/settings')]
+	public function getSettings(string $type, string $access_token): JSONResponse {
+		if ($type !== 'UserSettingsUri') {
+			return new JSONResponse(['error' => 'Invalid type parameter'], Http::STATUS_BAD_REQUEST);
+		}
+	
+		try {
+			$wopi = $this->wopiMapper->getWopiForToken($access_token);
+	
+			if ($wopi->getTokenType() !== Wopi::TOKEN_TYPE_SETTING_AUTH) {
+				return new JSONResponse(['error' => 'Invalid token type'], Http::STATUS_FORBIDDEN);
+			}
+	
+			// user admin check
+			$user = $this->userManager->get($wopi->getEditorUid());
+			if (!$user || !$this->groupManager->isAdmin($user->getUID())) {
+				return new JSONResponse(['error' => 'Access denied'], Http::STATUS_FORBIDDEN);
+			}
+	
+			$systemFiles = $this->settingsService->getSystemFiles();
+			$formattedList = $this->settingsService->getSystemFileList($systemFiles);
+	
+			$response = new JSONResponse($formattedList);
+	
+			return $response;
+		} catch (UnknownTokenException|ExpiredTokenException $e) {
+			$this->logger->debug($e->getMessage(), ['exception' => $e]);
+			return new JSONResponse(['error' => 'Unauthorized'], Http::STATUS_UNAUTHORIZED);
+		} catch (\Exception $e) {
+			$this->logger->error($e->getMessage(), ['exception' => $e]);
+			return new JSONResponse(['error' => 'Internal Server Error'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
+	#[PublicPage]
 	#[FrontpageRoute(verb: 'POST', url: 'wopi/settings/upload')]
-	public function handleSettingsFile(string $access_token): JSONResponse {
+	public function handleSettingsFile(string $fileId, string $access_token): JSONResponse {
 		try {
 			$wopi = $this->wopiMapper->getWopiForToken($access_token);
 
@@ -386,10 +426,8 @@ class WopiController extends Controller {
 			$fileContent = stream_get_contents($content);
 			fclose($content);
 
-
-			$newFileName = 'settings-' . uniqid() . '.json';
-
-			$result = $this->settingsService->uploadSystemFile($newFileName, $fileContent);
+			// TODO: JSON based upload
+			$result = $this->settingsService->uploadSystemFile($fileId, $fileContent);
 
 			return new JSONResponse([
 				'status' => 'success',
@@ -899,5 +937,10 @@ class WopiController extends Controller {
 	private function getWopiUrlForTemplate(Wopi $wopi): string {
 		$nextcloudUrl = $this->appConfig->getNextcloudUrl() ?: trim($this->urlGenerator->getAbsoluteURL(''), '/');
 		return $nextcloudUrl . '/index.php/apps/richdocuments/wopi/template/' . $wopi->getTemplateId() . '?access_token=' . $wopi->getToken();
+	}
+	// todo extract nextcloud url from everything
+	private function generateUserSettingsUri(Wopi $wopi): string {
+		$nextcloudUrl = $this->appConfig->getNextcloudUrl() ?: trim($this->urlGenerator->getAbsoluteURL(''), '/');
+		return $nextcloudUrl . '/index.php/apps/richdocuments/wopi/settings' . '?type=UserSettingsUri' . '&access_token=' . $wopi->getToken();
 	}
 }
