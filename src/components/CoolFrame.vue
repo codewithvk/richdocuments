@@ -26,6 +26,7 @@
 <script>
 
 import { generateCSSVarTokens } from '../helpers/coolParameters.js'
+import { languageToBCP47 } from '../helpers/index.js'
 
 export default {
 	name: 'CoolFrame',
@@ -61,7 +62,7 @@ export default {
 	},
 	mounted() {
 		if (this.iframeUrl.length > 0) {
-			this.formAction = this.iframeUrl
+			this.formAction = this.iframeUrl + '?lang=' + languageToBCP47()
 			this.isIframeLoaded = true
 		} else {
 			return
